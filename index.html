@@ -3,152 +3,247 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>demo // flow</title>
+  <title>christmas // scavenger</title>
   <style>
     :root { color-scheme: light dark; }
-    body { margin:0; font-family: system-ui, sans-serif; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     main { max-width: 680px; margin: 0 auto; padding: 28px 18px 64px; }
-    h1 { font-size: 18px; letter-spacing: .08em; text-transform: lowercase; margin-bottom: 18px; }
+    h1 { font-size: 18px; letter-spacing: .08em; text-transform: lowercase; margin: 0 0 18px; opacity: .9; }
+    h2 { margin: 10px 0 10px; }
     .card { border: 1px solid rgba(127,127,127,.35); border-radius: 14px; padding: 18px; margin: 14px 0; }
-    .muted { opacity: .7; }
-    .row { display:flex; gap:10px; flex-wrap: wrap; margin-top: 10px; }
-    input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid rgba(127,127,127,.45); background: transparent; }
+    .muted { opacity: .75; }
+    .row { display:flex; gap:10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+    input { flex: 1 1 240px; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(127,127,127,.45); background: transparent; }
     button { padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(127,127,127,.45); background: transparent; cursor: pointer; }
-    .hidden { display:none; }
-    .footer { font-size: 12px; opacity:.7; margin-top: 8px; }
+    button:hover { filter: brightness(1.05); }
+    .hint { margin-top: 10px; display:none; }
+    .footer { margin-top: 10px; font-size: 12px; opacity: .75; }
     a { color: inherit; }
+    .hidden { display:none; }
+    .pill { display:inline-block; padding:2px 8px; border:1px solid rgba(127,127,127,.35); border-radius: 999px; font-size: 12px; opacity:.85; }
   </style>
 </head>
 <body>
-<main>
-  <h1>demo // scavenger flow</h1>
+  <main>
+    <h1>christmas // scavenger</h1>
 
-  <div class="footer">
-    demonstration only · placeholder text · mechanics preview
-  </div>
-
-  <!-- STAGE 0 -->
-  <section class="card stage" id="s0">
-    <div class="muted">stage 0</div>
-    <h2>entry</h2>
-    <p>
-      this is a placeholder introduction.<br>
-      imagine atmosphere here.
-    </p>
-    <p class="muted">
-      a fictional riddle would normally appear.
-    </p>
-
-    <div class="row">
-      <input id="a0" placeholder="enter demo answer" />
-      <button onclick="check(0)">continue</button>
+    <div class="footer muted">
+      <span class="pill">one page</span>
+      <span class="pill">progress locked</span>
+      <span class="pill"><a href="#" id="reset">reset progress</a></span>
     </div>
-    <div class="footer" id="m0"></div>
-  </section>
 
-  <!-- STAGE 1 -->
-  <section class="card stage hidden" id="s1">
-    <div class="muted">stage 1</div>
-    <h2>second step</h2>
-    <p>
-      this represents an external lookup.<br>
-      nothing meaningful is hidden.
-    </p>
+    <!-- STAGE 0 -->
+    <section class="card stage" id="s0">
+      <div class="muted">stage 0</div>
+      <h2>the entry</h2>
+      <p>
+        christmas gifts don’t always fit under trees.<br/>
+        some wait at the edge of the sky.
+      </p>
+      <p><strong>riddle</strong><br/>
+        “look for where christmas falls in the southern sun. the answer is written, not spoken.”
+      </p>
 
-    <div class="row">
-      <input id="a1" placeholder="enter demo answer" />
-      <button onclick="check(1)">continue</button>
-    </div>
-    <div class="footer" id="m1"></div>
-  </section>
+      <div class="row">
+        <input id="a0" autocomplete="off" placeholder="enter the word" />
+        <button onclick="check(0)">unlock</button>
+        <button onclick="hint(0)">hint</button>
+      </div>
+      <div class="hint" id="h0"></div>
+      <div class="footer" id="m0"></div>
+    </section>
 
-  <!-- STAGE 2 -->
-  <section class="card stage hidden" id="s2">
-    <div class="muted">stage 2</div>
-    <h2>third step</h2>
-    <p>
-      imagine a different website or object here.<br>
-      this text is filler.
-    </p>
+    <!-- STAGE 1 -->
+    <section class="card stage hidden" id="s1">
+      <div class="muted">stage 1</div>
+      <h2>distance & time</h2>
+      <p><strong>riddle</strong><br/>
+        “two places. one day. midnight arrives twice, but not together.”
+      </p>
+      <p class="muted">
+        find the time difference between your city and mine on christmas day. submit the number.
+      </p>
 
-    <div class="row">
-      <input id="a2" placeholder="enter demo answer" />
-      <button onclick="check(2)">continue</button>
-    </div>
-    <div class="footer" id="m2"></div>
-  </section>
+      <div class="row">
+        <input id="a1" autocomplete="off" placeholder="e.g., 14" />
+        <button onclick="check(1)">continue</button>
+        <button onclick="hint(1)">hint</button>
+      </div>
+      <div class="hint" id="h1"></div>
+      <div class="footer" id="m1"></div>
+    </section>
 
-  <!-- STAGE 3 -->
-  <section class="card stage hidden" id="s3">
-    <div class="muted">stage 3</div>
-    <h2>final gate</h2>
-    <p>
-      this would normally confirm completion.<br>
-      demo text only.
-    </p>
+    <!-- STAGE 2 -->
+    <section class="card stage hidden" id="s2">
+      <div class="muted">stage 2</div>
+      <h2>the leap</h2>
+      <p><strong>riddle</strong><br/>
+        “fear disappears the moment you stop standing still. find the place where falling becomes flying.”
+      </p>
+      <p class="muted">
+        go to the video i linked you. the code is hidden in the description.
+      </p>
 
-    <div class="row">
-      <input id="a3" placeholder="enter demo answer" />
-      <button onclick="check(3)">finish</button>
-    </div>
-    <div class="footer" id="m3"></div>
-  </section>
+      <div class="row">
+        <input id="a2" autocomplete="off" placeholder="enter the phrase" />
+        <button onclick="check(2)">continue</button>
+        <button onclick="hint(2)">hint</button>
+      </div>
+      <div class="hint" id="h2"></div>
+      <div class="footer" id="m2"></div>
+    </section>
 
-  <!-- FINAL -->
-  <section class="card stage hidden" id="final">
-    <div class="muted">end</div>
-    <h2>complete</h2>
-    <p>
-      this is where a reveal would normally happen.<br>
-      nothing is revealed in the demo.
-    </p>
-  </section>
-</main>
+    <!-- STAGE 3 -->
+    <section class="card stage hidden" id="s3">
+      <div class="muted">stage 3</div>
+      <h2>the extra seat</h2>
+      <p><strong>riddle</strong><br/>
+        “some gifts are heavier when carried alone. one more place was reserved.”
+      </p>
+      <p class="muted">
+        the clue is in the photo’s details (not the pixels).
+      </p>
+
+      <div class="row">
+        <input id="a3" autocomplete="off" placeholder="enter the word" />
+        <button onclick="check(3)">reveal</button>
+        <button onclick="hint(3)">hint</button>
+      </div>
+      <div class="hint" id="h3"></div>
+      <div class="footer" id="m3"></div>
+    </section>
+
+    <!-- FINAL -->
+    <section class="card stage hidden" id="final">
+      <div class="muted">final</div>
+      <h2>open when ready</h2>
+      <p>
+        this is the part where i wish i was there in person.<br/>
+        but i can still give you a reason to look up.
+      </p>
+
+      <p><strong>your gift</strong></p>
+      <ul>
+        <li>voucher 1: <span>[paste voucher text here]</span></li>
+        <li>voucher 2: <span>[paste voucher text here]</span></li>
+        <li>voucher 3 (for your brother): <span>[paste voucher text here]</span></li>
+      </ul>
+
+      <p class="muted">
+        this isn’t a gift to open. it’s a memory waiting to happen.
+      </p>
+    </section>
+  </main>
 
 <script>
+  // ===== CONFIG (replace answers later) =====
   const stages = [
-    { next:"s1", answers:["a"] },
-    { next:"s2", answers:["b"] },
-    { next:"s3", answers:["c"] },
-    { next:"final", answers:["d"] }
+    { id:"s0", next:"s1", answers:["summer"], hints:[
+      "it’s not on this page—it's in something i wrote for you.",
+      "look for a doc/page where the first letters matter.",
+      "take the first letter of each paragraph; it spells the word."
+    ]},
+    { id:"s1", next:"s2", answers:["19"], hints:[
+      "think clocks, not calendars.",
+      "compare your city in australia with mine in the us.",
+      "use any timezone converter and submit the hour difference."
+    ]},
+    { id:"s2", next:"s3", answers:["jump with me","jumpwithme"], hints:[
+      "the code is visible, but you have to filter.",
+      "look at the description text, not the video.",
+      "take ONLY the capitalized words."
+    ]},
+    { id:"s3", next:"final", answers:["brother"], hints:[
+      "the answer isn’t in the image itself.",
+      "it’s in the image’s details / info / properties.",
+      "check metadata (exif comment/description) for the hidden word."
+    ]}
   ];
 
+  // ===== PROGRESS LOCK =====
   const stageIds = ["s0","s1","s2","s3","final"];
-  const KEY = "demo_unlocked";
+  const KEY = "xmas_unlocked"; // avoid collisions
 
-  function getUnlocked(){ return Number(localStorage.getItem(KEY) || "0"); }
-  function setUnlocked(n){ localStorage.setItem(KEY, String(n)); }
+  function getUnlocked() {
+    return Number(localStorage.getItem(KEY) || "0"); // 0 = s0
+  }
+  function setUnlocked(n) {
+    localStorage.setItem(KEY, String(n));
+  }
   if (localStorage.getItem(KEY) === null) setUnlocked(0);
 
-  function norm(s){ return (s||"").trim().toLowerCase(); }
+  // ===== HELPERS =====
+  function norm(s){
+    return (s||"").toString().trim().toLowerCase().replace(/\s+/g," ");
+  }
 
-  function showStage(id){
-    document.querySelectorAll(".stage").forEach(e=>e.classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
-    location.hash = id === "s0" ? "" : "#" + id;
+  function showStage(stageId){
+    document.querySelectorAll(".stage").forEach(el => el.classList.add("hidden"));
+    const el = document.getElementById(stageId);
+    if (el) el.classList.remove("hidden");
+    // keep URL informative; lock is enforced by route()
+    location.hash = stageId === "s0" ? "" : "#" + stageId;
+  }
+
+  function hint(i){
+    const h = document.getElementById("h"+i);
+    const m = document.getElementById("m"+i);
+    const used = Number(h.dataset.used || "0");
+    const nextHint = stages[i].hints[Math.min(used, stages[i].hints.length - 1)];
+    h.textContent = "hint: " + nextHint;
+    h.style.display = "block";
+    h.dataset.used = String(used + 1);
+    if (m) m.textContent = "";
   }
 
   function check(i){
-    const v = norm(document.getElementById("a"+i).value);
+    const input = document.getElementById("a"+i);
     const m = document.getElementById("m"+i);
-    if (stages[i].answers.includes(v)){
-      const next = Math.min(i+1, stageIds.length-1);
-      setUnlocked(Math.max(getUnlocked(), next));
-      showStage(stageIds[next]);
+    const val = norm(input?.value);
+    const ok = stages[i].answers.some(a => norm(a) === val);
+
+    if (ok){
+      m.textContent = "unlocked.";
+
+      const nextIndex = Math.min(i + 1, stageIds.length - 1);
+      setUnlocked(Math.max(getUnlocked(), nextIndex));
+
+      showStage(stages[i].next);
     } else {
-      m.textContent = "demo input rejected";
+      m.textContent = "not quite. try again or take a hint.";
     }
   }
 
+  window.hint = hint;
+  window.check = check;
+
   function route(){
-    const h = (location.hash||"").replace("#","");
-    const idx = h ? stageIds.indexOf(h) : 0;
-    const safe = idx !== -1 && idx <= getUnlocked() ? idx : getUnlocked();
-    showStage(stageIds[safe]);
+    const hash = (location.hash||"").replace("#","").trim();
+    const requestedIndex = hash ? stageIds.indexOf(hash) : 0;
+
+    const unlocked = getUnlocked();
+    const safeIndex =
+      (requestedIndex !== -1 && requestedIndex <= unlocked) ? requestedIndex : unlocked;
+
+    showStage(stageIds[safeIndex]);
   }
 
   window.addEventListener("hashchange", route);
   route();
+
+  document.getElementById("reset").addEventListener("click", (e) => {
+    e.preventDefault();
+    setUnlocked(0);
+    // clear hints/messages/inputs for clean testing
+    for (let i=0; i<4; i++){
+      const a = document.getElementById("a"+i); if (a) a.value = "";
+      const h = document.getElementById("h"+i); if (h) { h.style.display="none"; h.textContent=""; h.dataset.used="0"; }
+      const m = document.getElementById("m"+i); if (m) m.textContent="";
+    }
+    location.hash = "";
+    route();
+  });
 </script>
 </body>
 </html>
