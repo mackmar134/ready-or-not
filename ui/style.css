@@ -1,0 +1,95 @@
+:root { color-scheme: light dark; }
+
+body {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 20px 16px 80px;
+}
+
+header {
+  border: 1px solid rgba(127,127,127,.35);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+h1 {
+  font-size: 16px;
+  margin: 0 0 8px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  opacity: .9;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+button, a.button {
+  border: 1px solid rgba(127,127,127,.45);
+  background: transparent;
+  color: inherit;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover, a.button:hover { filter: brightness(1.05); }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+
+.card {
+  border: 1px solid rgba(127,127,127,.35);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.muted { opacity: .75; }
+.small { font-size: 12px; opacity: .75; }
+
+pre, code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+label { display: block; margin: 10px 0 6px; opacity: .9; }
+
+input, textarea, select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(127,127,127,.45);
+  background: transparent;
+  color: inherit;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+textarea { min-height: 140px; }
+
+hr { border: none; border-top: 1px solid rgba(127,127,127,.25); margin: 12px 0; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid rgba(127,127,127,.35);
+  border-radius: 999px;
+  font-size: 12px;
+  opacity: .85;
+}
