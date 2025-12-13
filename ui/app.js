@@ -72,21 +72,38 @@ function evidenceList(items, progress) {
   return mk(visible, "AVAILABLE") + lockedBlock;
 }
 
-function submitForm(progress) {
-  // This is the “police report” skeleton. We’ll make it more authentic next.
+function submitForm(progress, items) {
+  const visible = items.filter(it => (it.unlocks_at ?? 0) <= progress);
+
+  const options = visible.map(it => {
+    return `<option value="${escapeHtml(it.id)}">${escapeHtml(it.id)} — ${escapeHtml(it.title)}</option>`;
+  }).join("");
+
   return `
-    <div class="muted small">INVESTIGATOR SUBMISSION</div>
-    <label>Facts Established (free text for now)</label>
-    <textarea id="facts" placeholder="List facts you believe are established."></textarea>
+    <div class="muted small">INVESTIGATOR REPORT (FORM IR-1)</div>
+    <div class="small muted">Complete all fields. Use evidence IDs where applicable.</div>
+    <hr>
 
-    <label>Timeline Reconstruction</label>
-    <textarea id="timeline" placeholder="Describe the sequence of events."></textarea>
+    <label>SUBJECT</label>
+    <input id="r_subject" placeholder="e.g., Incident Reconstruction / Persons Unknown" />
 
-    <label>Primary Hypothesis (one sentence)</label>
-    <input id="hypothesis" placeholder="State your conclusion in one sentence." />
+    <label>FACTS ESTABLISHED (bullet points)</label>
+    <textarea id="r_facts" placeholder="- Fact 1\n- Fact 2\n- Fact 3"></textarea>
 
-    <label>Confidence</label>
-    <select id="confidence">
+    <label>TIMELINE RECONSTRUCTION</label>
+    <textarea id="r_timeline" placeholder="Describe sequence of events in order. Include times if known."></textarea>
+
+    <label>PRIMARY HYPOTHESIS (one sentence)</label>
+    <input id="r_hypothesis" placeholder="A single sentence explaining what happened and why." />
+
+    <label>EVIDENCE RELIED UPON (select 1–6)</label>
+    <select id="r_evidence" multiple size="6">
+      ${options}
+    </select>
+    <div class="small muted">Hold Ctrl to select multiple.</div>
+
+    <label>CONFIDENCE</label>
+    <select id="r_confidence">
       <option>Low</option>
       <option selected>Medium</option>
       <option>High</option>
@@ -97,17 +114,32 @@ function submitForm(progress) {
     </div>
 
     <div class="footer muted">
-      Current clearance level: ${progress}
+      Clearance level: ${progress}
     </div>
   `;
 }
 
-function evaluateSubmission(text) {
-  // Placeholder evaluation: we’ll replace this with branching rules later.
-  // For now: any non-empty hypothesis advances progress by 1 (up to 2).
-  const h = (text || "").trim();
-  if (!h) return { ok: false, message: "Submission rejected: missing hypothesis." };
-  return { ok: true, message: "Submission accepted. Additional material located.", advanceTo: 1 };
+function evaluateSubmission(payload) {
+  // Minimal rules for now:
+  // - Must provide hypothesis
+  // - Must cite at least 2 evidence IDs
+  // - Clearance increases gradually (0->1->2)
+  const hyp = (payload.hypothesis || "").trim();
+  const cited = payload.evidence || [];
+
+  if (!hyp) return { ok:false, message:"REJECTED: Missing primary hypothesis." };
+  if (cited.length < 2) return { ok:false, message:"REJECTED: Cite at least two evidence items." };
+
+  // Placeholder branching seed (we will replace with real branch rules later)
+  // For now: advance 1 step if below 1, else advance to 2.
+  const current = payload.progress;
+  const advanceTo = current < 1 ? 1 : Math.min(current + 1, 2);
+
+  return {
+    ok: true,
+    message: "ACCEPTED: Report logged. Additional material has been located.",
+    advanceTo
+  };
 }
 
 async function main() {
@@ -144,21 +176,40 @@ async function main() {
     setPanel(`<div class="muted">Timeline access granted.</div>`);
   }
 
-  async function openSubmit() {
-    setViewer("submit", `<pre class="muted">Complete the submission on the right panel.</pre>`);
-    setPanel(submitForm(getProgress()));
+async function openSubmit() {
+  setViewer("submit", `<pre class="muted">Complete the report on the right panel.</pre>`);
+  setPanel(submitForm(getProgress(), registry.items));
 
-    $("#fileReport").addEventListener("click", async () => {
-      const facts = $("#facts").value;
-      const tl = $("#timeline").value;
-      const hyp = $("#hypothesis").value;
-      const conf = $("#confidence").value;
+  $("#fileReport").addEventListener("click", async () => {
+    const subject = $("#r_subject").value;
+    const facts = $("#r_facts").value;
+    const timeline = $("#r_timeline").value;
+    const hypothesis = $("#r_hypothesis").value;
+    const confidence = $("#r_confidence").value;
 
-      const result = evaluateSubmission([facts, tl, hyp, conf].join("\n"));
-      if (!result.ok) {
-        setViewer("submit", `<pre>${escapeHtml(result.message)}</pre>`);
-        return;
-      }
+    const sel = $("#r_evidence");
+    const evidence = Array.from(sel.selectedOptions).map(o => o.value);
+
+    const payload = {
+      progress: getProgress(),
+      subject, facts, timeline, hypothesis, confidence,
+      evidence
+    };
+
+    const result = evaluateSubmission(payload);
+    if (!result.ok) {
+      setViewer("submit", `<pre>${escapeHtml(result.message)}</pre>`);
+      return;
+    }
+
+    const newLevel = Math.max(getProgress(), result.advanceTo ?? getProgress());
+    setProgress(newLevel);
+
+    $("#caseMeta").textContent = `STATUS: OPEN · CLEARANCE: ${newLevel}`;
+    setViewer("submit", `<pre>${escapeHtml(result.message)}\n\nClearance updated to ${newLevel}.</pre>`);
+    setPanel(`<div class="muted">Return to Evidence to review newly available items.</div>`);
+  });
+}
 
       // Advance clearance
       const newLevel = Math.max(getProgress(), result.advanceTo ?? getProgress());
